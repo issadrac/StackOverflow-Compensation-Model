@@ -11,6 +11,7 @@ column_list = [
     "Industry",
     "DevType",
     "ConvertedCompYearly",
+    "ConvertedCompYearlyInflation",
     "LanguageHaveWorkedWith",
     "LanguageWantToWorkWith",
     "AISelect",
@@ -94,6 +95,7 @@ def standardize_convertedcompyearly(convertedcompyearly_column, year_column, bas
     return salary * (cpi_base_year / cpi_current_year)
 
 def prepare_year(filename, year, column_sources=None):
+    filename = "StackOverflowData/" + filename
     df = pd.read_csv(filename, low_memory=False)
     column_sources = column_sources or {}
 
@@ -112,10 +114,14 @@ def prepare_year(filename, year, column_sources=None):
     result["Age"] = standardize_age(result["Age"])
     # Fixing EdLevel
     result["EdLevel"] = standardize_edlevel(result["EdLevel"])
-    # Fixing United States Difference
-    result["Country"] = result["Country"].replace("United States", "United States of America")
+    # Fixing Country Difference (US & UK)
+    country_mapping = {
+        "United States":"United States of America",
+        "United Kingdom of Great Britain and Northern Ireland": "United Kingdom",
+    }
+    result["Country"] = result["Country"].replace(country_mapping)
     # Converting Compensation for Inflation
-    result["ConvertedCompYearly"] = (standardize_convertedcompyearly(result["ConvertedCompYearly"], result["Year"]))
+    result["ConvertedCompYearlyInflation"] = (standardize_convertedcompyearly(result["ConvertedCompYearly"], result["Year"]))
    
     # Standardizing DevType
     def normalize_multiselect(value, mapping):
