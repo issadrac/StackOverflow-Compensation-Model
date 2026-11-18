@@ -1,0 +1,278 @@
+                                     OLS Regression Results
+================================================================================================
+Dep. Variable:     np.log(ConvertedCompYearlyInflation)   R-squared:                       0.333
+Model:                                              OLS   Adj. R-squared:                  0.331
+Method:                                   Least Squares   F-statistic:                     140.1
+Date:                                  Tue, 17 Nov 2026   Prob (F-statistic):               0.00
+Time:                                          16:31:15   Log-Likelihood:                -9517.1
+No. Observations:                                 17221   AIC:                         1.913e+04
+Df Residuals:                                     17172   BIC:                         1.951e+04
+Df Model:                                            48
+Covariance Type:                                    HC3
+====================================================================================================================================
+                                                                       coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------------------------------------------------------------
+Intercept                                                           10.9165      0.043    252.700      0.000      10.832      11.001
+C(Age)[T.25-34 years old]                                            0.2884      0.015     19.226      0.000       0.259       0.318
+C(Age)[T.35-44 years old]                                            0.2939      0.017     17.347      0.000       0.261       0.327
+C(Age)[T.45-54 years old]                                            0.1172      0.022      5.401      0.000       0.075       0.160
+C(Age)[T.55-64 years old]                                           -0.1005      0.027     -3.698      0.000      -0.154      -0.047
+C(Age)[T.65 years or older]                                         -0.3123      0.040     -7.797      0.000      -0.391      -0.234
+C(Age)[T.Prefer not to say]                                          0.1923      0.103      1.873      0.061      -0.009       0.394
+C(DevType)[T.Cloud infrastructure engineer]                          0.8944      0.044     20.558      0.000       0.809       0.980
+C(DevType)[T.Data engineer]                                          0.7088      0.041     17.231      0.000       0.628       0.789
+C(DevType)[T.Data or business analyst]                               0.2668      0.049      5.452      0.000       0.171       0.363
+C(DevType)[T.Data scientist or machine learning specialist]          0.6969      0.043     16.292      0.000       0.613       0.781
+C(DevType)[T.Database administrator]                                 0.4902      0.063      7.725      0.000       0.366       0.615
+C(DevType)[T.Designer]                                               0.5522      0.107      5.138      0.000       0.342       0.763
+C(DevType)[T.DevOps specialist]                                      0.7311      0.041     17.703      0.000       0.650       0.812
+C(DevType)[T.Developer, QA or test]                                  0.5178      0.046     11.271      0.000       0.428       0.608
+C(DevType)[T.Developer, back-end]                                    0.8390      0.038     22.337      0.000       0.765       0.913
+C(DevType)[T.Developer, desktop or enterprise applications]          0.5832      0.039     14.939      0.000       0.507       0.660
+C(DevType)[T.Developer, embedded applications or devices]            0.6942      0.040     17.345      0.000       0.616       0.773
+C(DevType)[T.Developer, front-end]                                   0.6726      0.039     17.133      0.000       0.596       0.750
+C(DevType)[T.Developer, full-stack]                                  0.6445      0.037     17.359      0.000       0.572       0.717
+C(DevType)[T.Developer, game or graphics]                            0.7340      0.057     12.980      0.000       0.623       0.845
+C(DevType)[T.Developer, mobile]                                      0.8562      0.043     20.140      0.000       0.773       0.940
+C(DevType)[T.Engineering manager]                                    0.9166      0.039     23.317      0.000       0.840       0.994
+C(DevType)[T.Other]                                                  0.5760      0.044     13.195      0.000       0.490       0.662
+C(DevType)[T.Product manager]                                        0.8513      0.067     12.665      0.000       0.720       0.983
+C(DevType)[T.Project manager]                                        0.6379      0.061     10.392      0.000       0.518       0.758
+C(DevType)[T.Scientist]                                              0.5479      0.053     10.376      0.000       0.444       0.651
+C(DevType)[T.Security professional]                                  0.8097      0.052     15.469      0.000       0.707       0.912
+C(DevType)[T.Senior Executive (C-Suite, VP, etc.)]                   1.0914      0.047     23.223      0.000       0.999       1.184
+C(DevType)[T.Student]                                               -0.3144      0.105     -2.994      0.003      -0.520      -0.109
+C(DevType)[T.System administrator]                                   0.2458      0.049      5.048      0.000       0.150       0.341
+C(EdLevel)[T.Bachelor's degree]                                      0.1733      0.015     11.239      0.000       0.143       0.204
+C(EdLevel)[T.Master's degree]                                        0.2271      0.017     13.602      0.000       0.194       0.260
+C(EdLevel)[T.Other]                                                  0.0353      0.082      0.431      0.667      -0.125       0.196
+C(EdLevel)[T.Primary/elementary school]                              0.2315      0.079      2.920      0.004       0.076       0.387
+C(EdLevel)[T.Professional degree]                                    0.3786      0.026     14.810      0.000       0.329       0.429
+C(EdLevel)[T.Secondary school]                                       0.0347      0.031      1.107      0.268      -0.027       0.096
+C(EdLevel)[T.Some college]                                           0.0792      0.018      4.349      0.000       0.043       0.115
+C(OrgSize)[T.10,000 or more employees]                               0.1173      0.011     10.234      0.000       0.095       0.140
+C(OrgSize)[T.100 to 499 employees]                                  -0.0750      0.011     -7.081      0.000      -0.096      -0.054
+C(OrgSize)[T.20 to 99 employees]                                    -0.1477      0.011    -13.425      0.000      -0.169      -0.126
+C(OrgSize)[T.5,000 to 9,999 employees]                               0.0229      0.016      1.422      0.155      -0.009       0.055
+C(OrgSize)[T.500 to 999 employees]                                  -0.0634      0.014     -4.558      0.000      -0.091      -0.036
+C(OrgSize)[T.I don’t know]                                          -0.2038      0.025     -8.283      0.000      -0.252      -0.156
+C(OrgSize)[T.Just me - I am a freelancer, sole proprietor, etc.]    -0.4008      0.045     -8.910      0.000      -0.489      -0.313
+C(OrgSize)[T.Less than 20 employees]                                -0.2498      0.014    -18.260      0.000      -0.277      -0.223
+WorkExp                                                              0.0195      0.001     29.566      0.000       0.018       0.021
+AISelect                                                             0.0628      0.007      8.726      0.000       0.049       0.077
+Year                                                                -0.0457      0.003    -13.843      0.000      -0.052      -0.039
+==============================================================================
+Omnibus:                     1071.218   Durbin-Watson:                   1.966
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             3291.375
+Skew:                           0.300   Prob(JB):                         0.00
+Kurtosis:                       5.056   Cond. No.                         486.
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+
+Test R-squared: 0.3855
+Test MAE:       0.3364
+Test RMSE:      0.4486
+
+Baseline MAE: 0.41967909672007364
+Model MAE: 0.3364265048196445
+Percentage: 19.837202412766043
+
+Baseline RMSE: 0.5758759035313835
+Model RMSE: 0.4486452344485706
+Percentage: 22.093417748964594
+
+========== BASIC DIAGNOSTICS ==========
+Observations: 17221
+Design matrix columns: 49
+Matrix rank: 49
+Condition number: 486.2035471879225
+R-squared: 0.33277548783345157
+Adjusted R-squared: 0.3309104297980454
+AIC: 19132.242601102345
+BIC: 19512.182958669284
+
+========== INDIVIDUAL VIF VALUES ==========
+                                                          column       VIF
+                             C(DevType)[T.Developer, full-stack] 20.723523
+                               C(DevType)[T.Developer, back-end] 12.632794
+                                 C(EdLevel)[T.Bachelor's degree]  6.019398
+                                       C(Age)[T.35-44 years old]  5.457293
+                                       C(Age)[T.45-54 years old]  5.174668
+     C(DevType)[T.Developer, desktop or enterprise applications]  5.028296
+                              C(DevType)[T.Developer, front-end]  4.885302
+                                       C(Age)[T.55-64 years old]  4.529801
+                               C(DevType)[T.Engineering manager]  4.475948
+                                   C(EdLevel)[T.Master's degree]  4.370447
+                                                         WorkExp  4.317009
+                                       C(Age)[T.25-34 years old]  4.308124
+       C(DevType)[T.Developer, embedded applications or devices]  3.886798
+                                             C(DevType)[T.Other]  3.661909
+                                      C(EdLevel)[T.Some college]  3.236027
+                                 C(DevType)[T.Developer, mobile]  3.140846
+                                     C(DevType)[T.Data engineer]  3.023856
+                                 C(DevType)[T.DevOps specialist]  2.926551
+     C(DevType)[T.Data scientist or machine learning specialist]  2.548729
+                     C(DevType)[T.Cloud infrastructure engineer]  2.518505
+              C(DevType)[T.Senior Executive (C-Suite, VP, etc.)]  2.496298
+                                     C(Age)[T.65 years or older]  2.232709
+                               C(EdLevel)[T.Professional degree]  2.199492
+                          C(OrgSize)[T.10,000 or more employees]  2.030745
+                              C(OrgSize)[T.100 to 499 employees]  1.971659
+                          C(DevType)[T.Data or business analyst]  1.904463
+                                C(OrgSize)[T.20 to 99 employees]  1.875008
+                              C(DevType)[T.System administrator]  1.776497
+                             C(DevType)[T.Security professional]  1.756531
+                            C(OrgSize)[T.Less than 20 employees]  1.687465
+                             C(DevType)[T.Developer, QA or test]  1.679962
+                       C(DevType)[T.Developer, game or graphics]  1.677881
+                                         C(DevType)[T.Scientist]  1.654879
+                                  C(EdLevel)[T.Secondary school]  1.470296
+                              C(OrgSize)[T.500 to 999 employees]  1.442547
+                                   C(DevType)[T.Product manager]  1.408229
+                            C(DevType)[T.Database administrator]  1.372475
+                          C(OrgSize)[T.5,000 to 9,999 employees]  1.359721
+                                   C(DevType)[T.Project manager]  1.314430
+                                           C(DevType)[T.Student]  1.292864
+                                                            Year  1.218592
+                                                        AISelect  1.186776
+                                          C(DevType)[T.Designer]  1.174450
+C(OrgSize)[T.Just me - I am a freelancer, sole proprietor, etc.]  1.132723
+                                      C(OrgSize)[T.I don’t know]  1.116764
+                         C(EdLevel)[T.Primary/elementary school]  1.059993
+                                             C(EdLevel)[T.Other]  1.055346
+                                     C(Age)[T.Prefer not to say]  1.028687
+
+========== TERM-LEVEL VIF VALUES ==========
+      term  maximum_VIF  average_VIF  number_of_columns
+C(DevType)    20.723523     3.706751                 24
+C(EdLevel)     6.019398     2.773000                  7
+    C(Age)     5.457293     3.788547                  6
+   WorkExp     4.317009     4.317009                  1
+C(OrgSize)     2.030745     1.577079                  8
+      Year     1.218592     1.218592                  1
+  AISelect     1.186776     1.186776                  1
+
+========== INFLUENTIAL OBSERVATIONS ==========
+Cook's distance cutoff: 0.0002322745485163463
+High-leverage cutoff: 0.005690726438650485
+           fitted  residual  studentized_residual  leverage  cooks_distance
+470082  12.302091  2.366131              5.630307  0.004072        0.002645
+433171  11.698078  2.325727              5.524964  0.000753        0.000469
+469999  12.170708  2.312632              5.494174  0.000869        0.000536
+516673  12.144503  2.293306              5.448943  0.001119        0.000679
+536944  12.144503  2.267331              5.387224  0.001119        0.000663
+435564  12.216405  2.266932              5.385286  0.000750        0.000444
+492048  11.457407  2.228565              5.309189  0.006407        0.003709
+526087  12.396326  2.206564              5.248323  0.003204        0.001807
+359834  12.274480  2.183858              5.188387  0.000925        0.000508
+491190  11.647776  2.116442              5.044226  0.007254        0.003794
+478447  11.736988  2.078523              4.938761  0.001178        0.000587
+408133  12.173342  2.073606              4.929808  0.002284        0.001136
+319444  12.072722  2.060193              4.894280  0.000800        0.000391
+361765  12.037612  2.056082              4.888438  0.002403        0.001175
+487182  12.044094  2.018101              4.794183  0.000757        0.000356
+342059  11.861408  2.009143              4.784345  0.005531        0.002598
+383527  11.647942  1.934926              4.600041  0.002254        0.000976
+467937  12.296217  1.924759              4.573040  0.001019        0.000435
+405958  10.469542  1.880287              4.505108  0.017682        0.007456
+337645  12.386714  1.889301              4.490734  0.001881        0.000776
+485847  12.006421 -1.879790             -4.466495  0.001152        0.000470
+542462  11.321383 -1.877351             -4.463886  0.002577        0.001051
+318878  11.831522  1.876510              4.458139  0.000900        0.000366
+520478  11.703454 -1.845496             -4.395403  0.005869        0.002328
+475977  11.798338 -1.846060             -4.389589  0.002626        0.001035
+
+
+        Year                Age                   OrgSize  WorkExp                                        DevType  ConvertedCompYearly  ConvertedCompYearlyInflation
+470082  2025    35-44 years old  10,000 or more employees    11.00  Data scientist or machine learning specialist           2346000.00                    2346000.00
+433171  2024    25-34 years old    Less than 20 employees    10.00                          Developer, full-stack           1200000.00                    1231575.22
+469999  2025    25-34 years old  10,000 or more employees    11.00                            Developer, back-end           1950000.00                    1950000.00
+516673  2026    25-34 years old  10,000 or more employees    12.00                            Developer, back-end           1950000.00                    1863206.65
+536944  2026    25-34 years old  10,000 or more employees    12.00                            Developer, back-end           1900000.00                    1815432.12
+435564  2024    25-34 years old  10,000 or more employees    11.00                            Developer, back-end           1900000.00                    1949994.10
+492048  2025    35-44 years old      500 to 999 employees    10.00                       Data or business analyst            878500.00                     878500.00
+526087  2026    35-44 years old  10,000 or more employees    21.00                              Developer, mobile           2300000.00                    2197628.36
+359834  2023    35-44 years old      100 to 499 employees    18.00                            Developer, back-end           1800000.00                    1901849.68
+491190  2025    18-24 years old      100 to 499 employees     3.00           Senior Executive (C-Suite, VP, etc.)            950000.00                     950000.00
+478447  2025    25-34 years old      500 to 999 employees     8.00                          Developer, full-stack           1000000.00                    1000000.00
+408133  2024    45-54 years old  10,000 or more employees    25.00    Developer, embedded applications or devices           1500000.00                    1539469.03
+319444  2023    35-44 years old  1,000 to 4,999 employees    17.00                          Developer, full-stack           1300000.00                    1373558.10
+361765  2023    25-34 years old  10,000 or more employees     7.00                                          Other           1250000.00                    1320728.94
+487182  2025    35-44 years old  1,000 to 4,999 employees    17.00                          Developer, full-stack           1279775.00                    1279775.00
+342059  2023  65 years or older    Less than 20 employees    50.00  Developer, desktop or enterprise applications           1000000.00                    1056583.15
+383527  2023    35-44 years old    Less than 20 employees    16.00  Developer, desktop or enterprise applications            750000.00                     792437.37
+467937  2025    45-54 years old  10,000 or more employees    23.00                            Developer, back-end           1500000.00                    1500000.00
+405958  2024    18-24 years old      100 to 499 employees     2.00                                        Student            225000.00                     230920.35
+337645  2023    35-44 years old      100 to 499 employees    23.00                            Engineering manager           1500000.00                    1584874.73
+485847  2025    45-54 years old      100 to 499 employees    18.00                            Developer, back-end             25000.00                      25000.00
+542462  2026    18-24 years old  5,000 to 9,999 employees     1.00                          Developer, full-stack             13221.00                      12632.54
+318878  2023    25-34 years old      100 to 499 employees     6.00                          Developer, full-stack            850000.00                     898095.68
+520478  2026    45-54 years old    Less than 20 employees    20.00                              Developer, mobile             20000.00                      19109.81
+475977  2025    25-34 years old  10,000 or more employees     7.00                                          Other             21000.00                      21000.00
+
+========== BREUSCH-PAGAN TEST ==========
+{'LM statistic': np.float64(734.2141347265427), 'LM p-value': np.float64(1.4899799138183788e-123), 'F statistic': np.float64(15.93185650889532), 'F p-value': np.float64(1.3262394765923791e-126)}
+
+========== DURBIN-WATSON ==========
+1.9663707456578643
+                                                            term  original_p  adjusted_p  significant_after_fdr
+                                       C(Age)[T.25-34 years old]        0.00        0.00                   True
+                                       C(Age)[T.35-44 years old]        0.00        0.00                   True
+                                       C(Age)[T.45-54 years old]        0.00        0.00                   True
+                                       C(Age)[T.55-64 years old]        0.00        0.00                   True
+                                     C(Age)[T.65 years or older]        0.00        0.00                   True
+                                     C(Age)[T.Prefer not to say]        0.06        0.07                  False
+                     C(DevType)[T.Cloud infrastructure engineer]        0.00        0.00                   True
+                                     C(DevType)[T.Data engineer]        0.00        0.00                   True
+                          C(DevType)[T.Data or business analyst]        0.00        0.00                   True
+     C(DevType)[T.Data scientist or machine learning specialist]        0.00        0.00                   True
+                            C(DevType)[T.Database administrator]        0.00        0.00                   True
+                                          C(DevType)[T.Designer]        0.00        0.00                   True
+                                 C(DevType)[T.DevOps specialist]        0.00        0.00                   True
+                             C(DevType)[T.Developer, QA or test]        0.00        0.00                   True
+                               C(DevType)[T.Developer, back-end]        0.00        0.00                   True
+     C(DevType)[T.Developer, desktop or enterprise applications]        0.00        0.00                   True
+       C(DevType)[T.Developer, embedded applications or devices]        0.00        0.00                   True
+                              C(DevType)[T.Developer, front-end]        0.00        0.00                   True
+                             C(DevType)[T.Developer, full-stack]        0.00        0.00                   True
+                       C(DevType)[T.Developer, game or graphics]        0.00        0.00                   True
+                                 C(DevType)[T.Developer, mobile]        0.00        0.00                   True
+                               C(DevType)[T.Engineering manager]        0.00        0.00                   True
+                                             C(DevType)[T.Other]        0.00        0.00                   True
+                                   C(DevType)[T.Product manager]        0.00        0.00                   True
+                                   C(DevType)[T.Project manager]        0.00        0.00                   True
+                                         C(DevType)[T.Scientist]        0.00        0.00                   True
+                             C(DevType)[T.Security professional]        0.00        0.00                   True
+              C(DevType)[T.Senior Executive (C-Suite, VP, etc.)]        0.00        0.00                   True
+                                           C(DevType)[T.Student]        0.00        0.00                   True
+                              C(DevType)[T.System administrator]        0.00        0.00                   True
+                                 C(EdLevel)[T.Bachelor's degree]        0.00        0.00                   True
+                                   C(EdLevel)[T.Master's degree]        0.00        0.00                   True
+                                             C(EdLevel)[T.Other]        0.67        0.67                  False
+                         C(EdLevel)[T.Primary/elementary school]        0.00        0.00                   True
+                               C(EdLevel)[T.Professional degree]        0.00        0.00                   True
+                                  C(EdLevel)[T.Secondary school]        0.27        0.27                  False
+                                      C(EdLevel)[T.Some college]        0.00        0.00                   True
+                          C(OrgSize)[T.10,000 or more employees]        0.00        0.00                   True
+                              C(OrgSize)[T.100 to 499 employees]        0.00        0.00                   True
+                                C(OrgSize)[T.20 to 99 employees]        0.00        0.00                   True
+                          C(OrgSize)[T.5,000 to 9,999 employees]        0.16        0.16                  False
+                              C(OrgSize)[T.500 to 999 employees]        0.00        0.00                   True
+                                      C(OrgSize)[T.I don’t know]        0.00        0.00                   True
+C(OrgSize)[T.Just me - I am a freelancer, sole proprietor, etc.]        0.00        0.00                   True
+                            C(OrgSize)[T.Less than 20 employees]        0.00        0.00                   True
+                                                         WorkExp        0.00        0.00                   True
+                                                        AISelect        0.00        0.00                   True
+                                                            Year        0.00        0.00                   True
+Index(['statistic', 'pvalue', 'df_constraint'], dtype='str')
+      term  statistic  original_p  df_constraint  adjusted_p  significant_after_fdr
+ Intercept   63857.29        0.00              1        0.00                   True
+    C(Age)    1230.47        0.00              6        0.00                   True
+C(DevType)    2000.42        0.00             24        0.00                   True
+C(EdLevel)     376.90        0.00              7        0.00                   True
+C(OrgSize)    1177.80        0.00              8        0.00                   True
+   WorkExp     874.17        0.00              1        0.00                   True
+  AISelect      76.15        0.00              1        0.00                   True
+      Year     191.63        0.00              1        0.00                   True
