@@ -14,455 +14,120 @@ df = df[df["Country"] == "United States of America"]
 # the exact same number is the same for 500, 1000, 3000, 5000, 10000
 df = df[df["ConvertedCompYearly"] > 10000]
 
+
 # Convert AISelect to 0/1
+df["AISelect"].dropna(inplace=True)
 df["AISelect"] = (~(df["AISelect"].str.contains("No,") | (df["AISelect"].str.contains("I don") & ~df["AISelect"].str.contains(";")))).astype("int8")
-priority_indices = [
-    474697, 514999, 532604, 518627,
-    522691, 525723, 310371, 339534,
-    371381, 492730, 536853, 527930,
-    543718, 310821, 342951, 323760
-]
 
-print(
-    df.loc[
-        priority_indices,
-        [
-            "Year",
-            "ConvertedCompYearly",
-            "Age",
-            "EdLevel",
-            "WorkExp",
-            "OrgSize",
-            "DevType",
-            "AISelect"
-        ]
-    ].to_string()
-)
+# Finding bogus results [Everything is user-inputted]
+#         Year                Age                                             OrgSize  WorkExp                                        DevType  ConvertedCompYearly  ConvertedCompYearlyInflation
+# 474697  2025    25-34 years old                            5,000 to 9,999 employees     2.00                            Academic researcher           9000000.00                    9000000.00
+# 522691  2026    35-44 years old                            5,000 to 9,999 employees    16.00                            Developer, back-end          30000000.00                   28664717.75
+# 310821  2023    25-34 years old                            10,000 or more employees     2.00  Data scientist or machine learning specialist           9000000.00                    9509248.38
+# 536853  2026    55-64 years old                              Less than 20 employees    50.00  Developer, desktop or enterprise applications           6000000.00                    5732943.55
+# 514999  2026  65 years or older                                  20 to 99 employees    54.00           Senior Executive (C-Suite, VP, etc.)             11000.00                      10510.40
+# 499647  2025    35-44 years old                              Less than 20 employees    15.00                          Developer, full-stack           2000000.00                    2000000.00
+# 492730  2025    45-54 years old  Just me - I am a freelancer, sole proprietor, etc.    20.00                          Security professional           3900000.00                    3900000.00
+# 486648  2025    35-44 years old                                100 to 499 employees    19.00                            Developer, back-end             13000.00                      13000.00
+# 379231  2023    35-44 years old                                        I don’t know    20.00                            Engineering manager             11900.00                      12573.34
+# 518627  2026    35-44 years old                                  20 to 99 employees    11.00                                       Designer           2000000.00                    1910981.18
+# 518564  2026    35-44 years old                            10,000 or more employees    15.00                            Developer, back-end           3500000.00                    3344217.07
+# 542612  2026    35-44 years old                            1,000 to 4,999 employees    17.00                          Developer, full-stack             11800.00                      11274.79
+# 518363  2026    35-44 years old                                  20 to 99 employees    25.00                          Developer, full-stack             12000.00                      11465.89
+# 518733  2026    35-44 years old                                  20 to 99 employees    13.00                              DevOps specialist             10800.00                      10319.30
+# 420052  2024    45-54 years old                                  20 to 99 employees    24.00                          Developer, full-stack             10000.00                      10263.13
+# 366993  2023    35-44 years old                            10,000 or more employees    10.00                           Developer, front-end           2130000.00                    2250522.12
+# 466983  2025    35-44 years old                                100 to 499 employees    10.00                          Developer, full-stack             11000.00                      11000.00
+# 482072  2025    25-34 years old                              Less than 20 employees     9.00           Senior Executive (C-Suite, VP, etc.)             15000.00                      15000.00
+# 521733  2026    25-34 years old                                500 to 999 employees     5.00    Developer, embedded applications or devices             10700.00                      10223.75
+# 420107  2024    55-64 years old                                100 to 499 employees    30.00                          Developer, full-stack             11000.00                      11289.44
+# 342951  2023    55-64 years old                              Less than 20 employees    38.00                                Project manager             11000.00                      11622.41
+# 543718  2026    55-64 years old                                        I don’t know    21.00                          Developer, full-stack           1000000.00                     955490.59
+# 493466  2025    55-64 years old                              Less than 20 employees    15.00                          Developer, full-stack           1000000.00                    1000000.00
+# 477737  2025    25-34 years old                            1,000 to 4,999 employees     6.00                          Developer, full-stack             12000.00                      12000.00
+# 326717  2023    45-54 years old                            10,000 or more employees    35.00                                          Other           2400000.00                    2535799.57
+# 503654  2025    35-44 years old                            5,000 to 9,999 employees     5.00  Developer, desktop or enterprise applications             12000.00                      12000.00
+# 540165  2026    45-54 years old                            5,000 to 9,999 employees    25.00                              DevOps specialist             18000.00                      17198.83
+# 323760  2023    45-54 years old                              Less than 20 employees    36.00                                Project manager             12000.00                      12679.00
+# 527930  2026    45-54 years old  Just me - I am a freelancer, sole proprietor, etc.     7.00                                  Data engineer           1200000.00                    1146588.71
+# 429718  2024    25-34 years old                            10,000 or more employees     6.00    Developer, embedded applications or devices             18500.00                      18986.78
+# 520368  2026    18-24 years old                                100 to 499 employees     5.00                            Developer, back-end             12000.00                      11465.89
+# 512849  2025    18-24 years old                            10,000 or more employees     5.00                          Developer, full-stack           1000000.00                    1000000.00
+# 364111  2023    45-54 years old                                100 to 499 employees    30.00                          Developer, full-stack             19000.00                      20075.08
+# 417067  2024    25-34 years old                              Less than 20 employees     5.00                            Developer, back-end             15000.00                      15394.69
+# 480473  2025    45-54 years old                                  20 to 99 employees    31.00                          Developer, full-stack             18900.00                      18900.00
+# 492337  2025    18-24 years old                            1,000 to 4,999 employees     7.00                           Developer, front-end             11470.00                      11470.00
+# 520075  2026    18-24 years old                            10,000 or more employees     2.00  Data scientist or machine learning specialist             13000.00                      12421.38
+# 429633  2024    35-44 years old                                  20 to 99 employees    10.00                          Developer, full-stack             17000.00                      17447.32
+# 496429  2025    35-44 years old                            5,000 to 9,999 employees    10.00                          Developer, full-stack             18000.00                      18000.00
+# 426567  2024  65 years or older                            5,000 to 9,999 employees    43.00                                      Scientist             22000.00                      22578.88
+# 512472  2025    25-34 years old                              Less than 20 employees    12.00                          Developer, full-stack             13000.00                      13000.00
+# 418336  2024    35-44 years old                                  20 to 99 employees    20.00                            Engineering manager             26000.00                      26684.13
+# 321993  2023    25-34 years old                                  20 to 99 employees     5.00                                          Other             14400.00                      15214.80
+# 496442  2025    35-44 years old                                        I don’t know    19.00                                          Other             18000.00                      18000.00
+# 437763  2024    35-44 years old                              Less than 20 employees     8.00                              Developer, mobile             20000.00                      20526.25
+# 521525  2026    45-54 years old                              Less than 20 employees    27.00                          Developer, full-stack             20000.00                      19109.81
+# 517599  2026    35-44 years old                            10,000 or more employees    15.00                          Developer, full-stack             27300.00                      26084.89
 
-df.to_csv("BeforeRemovalCompensationDataFrame.csv")
-# 474697: Academic researcher, primary education, 2 years experience, $9 million.
-# 518627: Designer, 11 years experience, $1.91 million. (Most likely meant 200k not 2million originally)
-# 522691: Back-end developer, 16 years experience, $28.7 million.
-# 310821: Data scientist, 2 years experience, $9.51 million.
-# 514999: 65 years or older, Senior Executive, 10k with 54 years of work experience
-# 342951: Project Manager 11k with 38 years of working experience employed full time
+# Hobbyists, part-time, or retired folk
+# 544149  2026    55-64 years old  Just me - I am a freelancer, sole proprietor, etc.    42.00                          Developer, full-stack             12000.00                      11465.89
+# 515068  2026    35-44 years old  Just me - I am a freelancer, sole proprietor, etc.    16.00                          Developer, full-stack             12400.00                      11848.08
+# 310371  2023    55-64 years old  Just me - I am a freelancer, sole proprietor, etc.    32.00                  Cloud infrastructure engineer             15400.00                      16271.38
+# 470934  2025    45-54 years old  Just me - I am a freelancer, sole proprietor, etc.    30.00                            Developer, back-end             15000.00                      15000.00
+# 529420  2026    55-64 years old  Just me - I am a freelancer, sole proprietor, etc.    40.00                              Developer, mobile             19600.00                      18727.62
+# 516785  2026    25-34 years old  Just me - I am a freelancer, sole proprietor, etc.     3.00                          Developer, full-stack             12000.00                      11465.89
+# 529191  2026    25-34 years old                              Less than 20 employees     7.00                           Developer, front-end             16000.00                      15287.85
+
 df = df.drop(
-    index=[474697, 518627, 522691, 310821, 514999, 342951],
-    errors="ignore"
-).copy()
+   index=[474697, 522691, 310821, 536853, 514999,
+          499647, 492730, 486648, 379231, 518627, 
+          518564, 542612, 518363, 518733, 420052, 
+          366993, 466983, 482072, 521733, 420107, 
+          342951, 543718, 493466, 477737, 326717, 
+          503654, 540165, 323760, 527930, 429718, 
+          520368, 512849, 364111, 417067, 480473, 
+          492337, 520075, 429633, 496429, 426567, 
+          512472, 418336, 321993, 496442, 437763, 
+          521525, 517599,
+          # Hobbyists, part-time, or retired folk
+          544149, 515068, 310371, 470934, 529420,
+          516785, 529191],
+   errors="ignore").copy()
 
-
-df.to_csv("FinalCompensationDataFrame.csv")
 
 # Make it so that only valid selections are added
-import RelevantNow.Helpers.CompareYears as cy
+import CompareYears as cy
 import statsmodels.api as sm
 variables = ['Age', 'DevType', 'EdLevel', 'WorkExp', 'OrgSize', 'AISelect', 'Year']
 categorical_variables = ['Age', 'DevType', 'EdLevel', 'OrgSize']
 for col in categorical_variables:
     valid_selections = cy.FindWhatsInAll(df, years, col, False)
     df = df[df[col].isin(valid_selections)]
-    print(valid_selections, "\n\n")
+    # print(valid_selections, "\n\n")
 
 
 df["Year"] = df["Year"] - years[0]
-df["WorkExp"] = df["WorkExp"] - df["WorkExp"].mean()
+original_mean = df["WorkExp"].mean()
+df["WorkExp"] = df["WorkExp"] - original_mean
 
-addingAll = ""
-for var in variables:
-    if var in categorical_variables:
-        addingAll += "C(" + var + ") + "
-        if var != 'Year' and var != 'DevType':
-            addingAll += "Year:C(" + var + ") + "
-    else:
-        addingAll += var + " + "
-        if var != 'Year':
-            addingAll += "Year:" + var + " + "           
-addingAll = addingAll[0:len(addingAll)-3]
-formula = "np.log(ConvertedCompYearly) ~ " + addingAll
+addingAll = " + ".join(f"C({var})" if var in categorical_variables else var for var in variables)
+formula = "np.log(ConvertedCompYearlyInflation) ~ " + addingAll
 model = sm.OLS.from_formula(formula, data=df).fit(cov_type="HC3")
 
 print(model.summary())
-
-def TestResults(df):
-    import statsmodels.formula.api as smf
-    
-    # Split the data
-    train_df = df[df["Year"] < 3].copy()
-    test_df = df[df["Year"] == 3].copy()
-    
-    # Fit your original model on training data only
-    model_test = smf.ols(
-        formula=formula,
-        data=train_df
-    ).fit(cov_type="HC3")
-    
-    # Predict log compensation on unseen data
-    y_actual = np.log(test_df["ConvertedCompYearly"])
-    y_pred = model_test.predict(test_df)
-    
-    # Calculate prediction metrics
-    errors = y_actual - y_pred
-    
-    mae = np.mean(np.abs(errors))
-    rmse = np.sqrt(np.mean(errors**2))
-    
-    ss_res = np.sum(errors**2)
-    ss_tot = np.sum((y_actual - y_actual.mean())**2)
-    test_r2 = 1 - ss_res / ss_tot
-    
-    print()
-    print(f"Test R-squared: {test_r2:.4f}")
-    print(f"Test MAE:       {mae:.4f}")
-    print(f"Test RMSE:      {rmse:.4f}")
-    print()
-    # Baseline: predict the training-set mean for everyone
-    baseline_pred = np.repeat(
-        np.log(train_df["ConvertedCompYearly"]).mean(),
-        len(test_df)
-    )
-    
-    y_actual = np.log(test_df["ConvertedCompYearly"])
-    
-    baseline_mae = np.mean(np.abs(y_actual - baseline_pred))
-    baseline_rmse = np.sqrt(np.mean((y_actual - baseline_pred)**2))
-    
-    print("Baseline MAE:", baseline_mae)
-    print("Model MAE:", mae)
-    print("Percentage:", 100*(1-mae/baseline_mae))
-    print()
-    print("Baseline RMSE:", baseline_rmse)
-    print("Model RMSE:", rmse)
-    print("Percentage:", 100*(1-rmse/baseline_rmse))
-    print()
-
-TestResults(df)
-
-# -----------------------------------------------------------------------------------------------------
-# AI TESTS
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import statsmodels.api as sm
-
-from statsmodels.stats.outliers_influence import variance_inflation_factor
-from statsmodels.stats.diagnostic import het_breuschpagan
-from statsmodels.stats.stattools import durbin_watson
-
-
-# ============================================================
-# 1. Basic model diagnostics
-# ============================================================
-
-X = model.model.exog
-y = model.model.endog
-n, p = X.shape
-
-print("========== BASIC DIAGNOSTICS ==========")
-print("Observations:", n)
-print("Design matrix columns:", p)
-print("Matrix rank:", np.linalg.matrix_rank(X))
-print("Condition number:", np.linalg.cond(X))
-print("R-squared:", model.rsquared)
-print("Adjusted R-squared:", model.rsquared_adj)
-print("AIC:", model.aic)
-print("BIC:", model.bic)
-
-
-# ============================================================
-# 2. VIF for individual design-matrix columns
-# ============================================================
-
-print("\n========== INDIVIDUAL VIF VALUES ==========")
-
-vif_results = []
-
-for i, column_name in enumerate(model.model.exog_names):
-    if column_name == "Intercept":
-        continue
-
-    try:
-        vif_value = variance_inflation_factor(X, i)
-    except Exception:
-        vif_value = np.inf
-
-    vif_results.append({
-        "column": column_name,
-        "VIF": vif_value
-    })
-
-vif_df = pd.DataFrame(vif_results).sort_values(
-    "VIF",
-    ascending=False
-)
-
-print(vif_df.to_string(index=False))
-
-
-# ============================================================
-# 3. VIF grouped by model term
-#    This is more useful with categorical variables
-# ============================================================
-
-print("\n========== TERM-LEVEL VIF VALUES ==========")
-
-import patsy
-
-# Recreate the design matrix from the model formula
-y_design, x_design = patsy.dmatrices(
-    model.model.formula,
-    model.model.data.frame,
-    return_type="dataframe"
-)
-design_info = x_design.design_info
-term_vif_results = []
-for term_name, column_slice in design_info.term_name_slices.items():
-
-    if term_name == "Intercept":
-        continue
-
-    term_columns = x_design.columns[column_slice]
-
-    term_vifs = vif_df[
-        vif_df["column"].isin(term_columns)
-    ]["VIF"]
-
-    term_vif_results.append({
-        "term": term_name,
-        "maximum_VIF": term_vifs.max(),
-        "average_VIF": term_vifs.mean(),
-        "number_of_columns": len(term_columns)
-    })
-
-term_vif_df = pd.DataFrame(term_vif_results).sort_values(
-    "maximum_VIF",
-    ascending=False
-)
-
-print(term_vif_df.to_string(index=False))
-
-
-# ============================================================
-# 4. Residual diagnostics
-# ============================================================
-
-residuals = model.resid
-fitted_values = model.fittedvalues
-
-influence = model.get_influence()
-
-studentized_residuals = influence.resid_studentized_internal
-leverage = influence.hat_matrix_diag
-cooks_distance = influence.cooks_distance[0]
-
-diagnostics_df = pd.DataFrame({
-    "fitted": fitted_values,
-    "residual": residuals,
-    "studentized_residual": studentized_residuals,
-    "leverage": leverage,
-    "cooks_distance": cooks_distance
-}, index=model.model.data.row_labels)
-
-# ============================================================
-# 5. Diagnostic plots
-# ============================================================
-
-fig, axes = plt.subplots(
-    2,
-    2,
-    figsize=(14, 11)
-)
-
-# Residuals versus fitted values
-sns.residplot(
-    x=fitted_values,
-    y=residuals,
-    lowess=True,
-    scatter_kws={"alpha": 0.35},
-    line_kws={"color": "red"},
-    ax=axes[0, 0]
-)
-
-axes[0, 0].axhline(0, color="black", linestyle="--")
-axes[0, 0].set_title("Residuals vs Fitted Values")
-axes[0, 0].set_xlabel("Fitted Values")
-axes[0, 0].set_ylabel("Residuals")
-
-
-# Normal Q-Q plot
-sm.qqplot(
-    residuals,
-    line="45",
-    fit=True,
-    ax=axes[0, 1]
-)
-
-axes[0, 1].set_title("Normal Q-Q Plot")
-
-
-# Scale-location plot
-sqrt_abs_studentized = np.sqrt(
-    np.abs(studentized_residuals)
-)
-
-axes[1, 0].scatter(
-    fitted_values,
-    sqrt_abs_studentized,
-    alpha=0.35
-)
-
-sns.regplot(
-    x=fitted_values,
-    y=sqrt_abs_studentized,
-    scatter=False,
-    lowess=True,
-    line_kws={"color": "red"},
-    ax=axes[1, 0]
-)
-
-axes[1, 0].set_title("Scale-Location Plot")
-axes[1, 0].set_xlabel("Fitted Values")
-axes[1, 0].set_ylabel(
-    "Square Root of Absolute Studentized Residual"
-)
-
-
-# Residuals versus leverage
-axes[1, 1].scatter(
-    leverage,
-    studentized_residuals,
-    alpha=0.35
-)
-
-axes[1, 1].axhline(0, color="black", linestyle="--")
-
-high_leverage_cutoff = 2 * p / n
-axes[1, 1].axvline(
-    high_leverage_cutoff,
-    color="red",
-    linestyle="--",
-    label=f"Leverage cutoff = {high_leverage_cutoff:.4f}"
-)
-
-axes[1, 1].set_title("Residuals vs Leverage")
-axes[1, 1].set_xlabel("Leverage")
-axes[1, 1].set_ylabel("Studentized Residuals")
-axes[1, 1].legend()
-
-plt.tight_layout()
-plt.show()
-
-
-# ============================================================
-# 6. Influential observations
-# ============================================================
-
-print("\n========== INFLUENTIAL OBSERVATIONS ==========")
-
-cook_cutoff = 4 / n
-
-print("Cook's distance cutoff:", cook_cutoff)
-print("High-leverage cutoff:", high_leverage_cutoff)
-
-influential_observations = diagnostics_df[
-    (diagnostics_df["cooks_distance"] > cook_cutoff)
-    | (diagnostics_df["leverage"] > high_leverage_cutoff)
-    | (np.abs(diagnostics_df["studentized_residual"]) > 3)
-].sort_values(
-    "studentized_residual",
-    ascending=False,
-    key=lambda x: x.abs()
-)
-
-print(
-    influential_observations.head(25).to_string()
-)
-
-print()
-print()
-pd.set_option("display.float_format", "{:.2f}".format)
-rows = df.loc[influential_observations.head(25).index, ["Year", "Age", "WorkExp", "DevType", "ConvertedCompYearly"]]
-
-print(rows.to_string())
-# ============================================================
-# 7. Heteroskedasticity test
-# ============================================================
-
-print("\n========== BREUSCH-PAGAN TEST ==========")
-
-bp_results = het_breuschpagan(
-    residuals,
-    X
-)
-
-bp_labels = [
-    "LM statistic",
-    "LM p-value",
-    "F statistic",
-    "F p-value"
-]
-
-print(dict(zip(bp_labels, bp_results)))
-
-
-# ============================================================
-# 8. Durbin-Watson statistic
-# ============================================================
-
-print("\n========== DURBIN-WATSON ==========")
-print(durbin_watson(residuals))
-
-
-# ============================================================
-# 9. Save diagnostic tables if desired
-# ============================================================
-
-vif_df.to_csv("individual_vif_results.csv", index=False)
-term_vif_df.to_csv("term_vif_results.csv", index=False)
-diagnostics_df.to_csv("observation_diagnostics.csv")
-
-from statsmodels.stats.multitest import multipletests
-import pandas as pd
-
-# Exclude the intercept unless you specifically want to test it
-p_values = model.pvalues.drop("Intercept")
-
-reject, p_corrected, _, _ = multipletests(
-    p_values,
-    method="fdr_bh"
-)
-
-results = pd.DataFrame({
-    "term": p_values.index,
-    "original_p": p_values.values,
-    "adjusted_p": p_corrected,
-    "significant_after_fdr": reject
-})
-
-print(results.to_string(index=False))
-
-wald_table = model.wald_test_terms(
-    skip_single=False,
-    scalar=True
-).table.copy()
-
-print(wald_table.columns)  # optional: inspect column names
-
-joint_results = wald_table.reset_index()
-joint_results = joint_results.rename(columns={
-    "index": "term",
-    "pvalue": "original_p"
-})
-
-p_values = joint_results["original_p"].astype(float)
-
-reject, adjusted_p, _, _ = multipletests(
-    p_values,
-    method="fdr_bh"
-)
-
-joint_results["adjusted_p"] = adjusted_p
-joint_results["significant_after_fdr"] = reject
-
-print(joint_results.to_string(index=False))
+model.save("Final_Model.pickle")
+# This tests the model by training on all years but the final year and testing the model based on that final year
+# Ex: Observed Years 2020-2026
+#   Training Data: 2020-2025
+#   Test Data = 2026
+cy.GetTestResults(df, years, formula)
+# Testing original model with a multitude of tests
+# Basic diagnostics
+# VIF (group and ungrouped)
+# Residual Diagnostic with plots
+# Influential Observations
+# Heteroskedasticity test
+# Durbin-Watson statistic
+# Wald z-tests (Individual and joint)
+# Multiple testing correction
+cy.AI_Tests(df, model, print_influential_instance_results=True, original_mean=original_mean)
