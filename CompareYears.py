@@ -171,55 +171,114 @@ def CountsPerYear(df, years, column, MULTI=False, PRINT=True):
 
 def GetTestResults(df, years, formula, PRINT=True):
     import statsmodels.formula.api as smf
-    
+    import numpy as np
+    from sklearn.metrics import (
+        mean_absolute_error,
+        mean_squared_error,
+        r2_score
+    )
+    df = df.dropna(subset="WorkExp")
     # Split the data
-    train_df = df[df["Year"] < years[-1]-years[0]].copy()
-    test_df = df[df["Year"] == years[-1]-years[0]].copy()
-    
-    # Fit your original model on training data only
+    train_df = df[df["Year"] < years[-1] - years[0]].copy()
+    test_df = df[df["Year"] == years[-1] - years[0]].copy()
+
+    # Fit model on training data
     model_test = smf.ols(
         formula=formula,
         data=train_df
     ).fit(cov_type="HC3")
-    
-    # Predict log compensation on unseen data
-    y_actual = np.log(test_df["ConvertedCompYearlyInflation"])
-    y_pred = model_test.predict(test_df)
-    
-    # Calculate prediction metrics
-    errors = y_actual - y_pred
-    
-    mae = np.mean(np.abs(errors))
-    rmse = np.sqrt(np.mean(errors**2))
-    
-    ss_res = np.sum(errors**2)
-    ss_tot = np.sum((y_actual - y_actual.mean())**2)
-    test_r2 = 1 - ss_res / ss_tot
-    
-    print()
-    print(f"Test R-squared: {test_r2:.4f}")
-    print(f"Test MAE:       {mae:.4f}")
-    print(f"Test RMSE:      {rmse:.4f}")
-    print()
-    # Baseline: predict the training-set mean for everyone
-    baseline_pred = np.repeat(
+
+    # Actual and predicted log compensation
+    y_actual_log = np.log(test_df["ConvertedCompYearlyInflation"])
+    y_pred_log = model_test.predict(test_df)
+
+    # Log-scale metrics
+    mae = mean_absolute_error(y_actual_log, y_pred_log)
+    rmse = np.sqrt(mean_squared_error(y_actual_log, y_pred_log))
+    test_r2 = r2_score(y_actual_log, y_pred_log)
+
+    # Reverse log transformation
+    y_actual = np.exp(y_actual_log)
+    y_pred = np.exp(y_pred_log)
+
+    # Original-scale metrics (USD)
+    r_mae = mean_absolute_error(y_actual, y_pred)
+    r_rmse = np.sqrt(mean_squared_error(y_actual, y_pred))
+    r_r2 = r2_score(y_actual, y_pred)
+
+    # Baseline: training-set mean in log space
+    baseline_pred_log = np.repeat(
         np.log(train_df["ConvertedCompYearlyInflation"]).mean(),
         len(test_df)
     )
-    
-    y_actual = np.log(test_df["ConvertedCompYearlyInflation"])
-    
-    baseline_mae = np.mean(np.abs(y_actual - baseline_pred))
-    baseline_rmse = np.sqrt(np.mean((y_actual - baseline_pred)**2))
-    
-    print("Baseline MAE:", baseline_mae)
-    print("Model MAE:", mae)
-    print("Percentage:", 100*(1-mae/baseline_mae))
-    print()
-    print("Baseline RMSE:", baseline_rmse)
-    print("Model RMSE:", rmse)
-    print("Percentage:", 100*(1-rmse/baseline_rmse))
-    print()
+
+    # Baseline metrics on log scale
+    baseline_mae = mean_absolute_error(y_actual_log, baseline_pred_log)
+    baseline_rmse = np.sqrt(
+        mean_squared_error(y_actual_log, baseline_pred_log)
+    )
+
+    # Baseline predictions on original scale
+    baseline_pred = np.exp(baseline_pred_log)
+
+    # Baseline metrics in USD
+    r_baseline_mae = mean_absolute_error(y_actual, baseline_pred)
+    r_baseline_rmse = np.sqrt(
+        mean_squared_error(y_actual, baseline_pred)
+    )
+
+    # Percentage improvements
+    mae_improvement = 100 * (1 - mae / baseline_mae)
+    rmse_improvement = 100 * (1 - rmse / baseline_rmse)
+
+    r_mae_improvement = 100 * (1 - r_mae / r_baseline_mae)
+    r_rmse_improvement = 100 * (1 - r_rmse / r_baseline_rmse)
+
+    if PRINT:
+        print("\n--- Log Scale ---")
+        print(f"R-Squared: {test_r2:.4f}")
+        print(f"Baseline MAE: {baseline_mae:.4f}")
+        print(f"Model MAE: {mae:.4f}")
+        print(f"MAE Improvement: {mae_improvement:.2f}%")
+        print()
+        print(f"Baseline RMSE: {baseline_rmse:.4f}")
+        print(f"Model RMSE: {rmse:.4f}")
+        print(f"RMSE Improvement: {rmse_improvement:.2f}%")
+
+        print("\n--- Original Scale (USD) ---")
+        print(f"R-Squared: {r_r2:.4f}")
+        print(f"Baseline MAE: ${r_baseline_mae:,.2f}")
+        print(f"Model MAE: ${r_mae:,.2f}")
+        print(f"MAE Improvement: {r_mae_improvement:.2f}%")
+        print()
+        print(f"Baseline RMSE: ${r_baseline_rmse:,.2f}")
+        print(f"Model RMSE: ${r_rmse:,.2f}")
+        print(f"RMSE Improvement: {r_rmse_improvement:.2f}%")
+        print()
+        percentage_errors = (
+            np.abs(y_actual - y_pred) / y_actual
+        ) * 100
+        
+        mdape = np.median(percentage_errors)
+        
+        print(f"Median Absolute Percentage Error: {mdape:.2f}%")
+        for threshold in [10, 20, 30, 50]:
+            accuracy = np.mean(percentage_errors <= threshold) * 100
+        print(f"Within {threshold}%: {accuracy:.2f}%")
+
+    return {
+        "model": model_test,
+        "R2_log": test_r2,
+        "MAE_log": mae,
+        "RMSE_log": rmse,
+        "R2": r_r2,
+        "MAE": r_mae,
+        "RMSE": r_rmse,
+        "baseline_MAE_log": baseline_mae,
+        "baseline_RMSE_log": baseline_rmse,
+        "baseline_MAE": r_baseline_mae,
+        "baseline_RMSE": r_baseline_rmse
+    }
 
 def AI_Tests(df, model, print_influential_instance_results=False, original_mean = 0):
     # AI TESTS ----------------------------------
@@ -468,7 +527,7 @@ def AI_Tests(df, model, print_influential_instance_results=False, original_mean 
     if print_influential_instance_results:
         df["WorkExp"] = df["WorkExp"] + original_mean
         df["Year"] = df["Year"] + 2023
-        rows = df.loc[influential_observations.head(25).index, ["Year", "Age", "OrgSize", "WorkExp", "DevType", "ConvertedCompYearly", "ConvertedCompYearlyInflation"]]
+        rows = df.loc[influential_observations.head(25).index, ["ID", "Year", "Age", "OrgSize", "WorkExp", "DevType", "ConvertedCompYearly", "ConvertedCompYearlyInflation"]]
         df["WorkExp"] = df["WorkExp"] - original_mean
         df["Year"] = df["Year"] - 2023
         print(rows.to_string())
